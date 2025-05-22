@@ -1,0 +1,113 @@
+
+    <html>
+    <head>
+        <title>Avaliação das Aplicações - Expandível</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background-color: #f4f4f4;
+            }
+            .app-row {
+                background-color: #fff;
+                border: 1px solid #ddd;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            .app-header {
+                padding: 15px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                background-color: #2a4d69;
+                color: #fff;
+            }
+            .toggle-button {
+                font-weight: bold;
+                font-size: 18px;
+                margin-right: 10px;
+                width: 20px;
+                text-align: center;
+            }
+            .system-name {
+                font-size: 16px;
+            }
+            .app-details {
+                display: none;
+                padding: 15px;
+                background-color: #fafafa;
+            }
+            .app-details p {
+                margin: 6px 0;
+            }
+        </style>
+        <script>
+            function toggleDetails(id) {
+                var details = document.getElementById(id);
+                var button = details.previousElementSibling.querySelector('.toggle-button');
+                if (details.style.display === 'none' || details.style.display === '') {
+                    details.style.display = 'block';
+                    button.textContent = '−';
+                } else {
+                    details.style.display = 'none';
+                    button.textContent = '+';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Avaliação das Aplicações</h1>
+        
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-1')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">SAP</span>
+        </div>
+        <div id="details-1" class="app-details">
+            <p><strong>Nível de Aderência:</strong> 2</p>
+            <p><strong>Versão do Produto:</strong> EHP 5.0</p>
+            <p><strong>Sistema Operacional:</strong> SO Verão X</p>
+            <p><strong>Banco de Dados:</strong> Oracle 9i</p>
+            <p><strong>Tecnologia:</strong> XXXX</p>
+            <p><strong>SSO:</strong> OK</p>
+            <p><strong>Comentários:</strong> nan</p>
+        </div>
+    </div>
+    
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-2')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">TMM</span>
+        </div>
+        <div id="details-2" class="app-details">
+            <p><strong>Nível de Aderência:</strong> 1</p>
+            <p><strong>Versão do Produto:</strong> Versão 2</p>
+            <p><strong>Sistema Operacional:</strong> Windows</p>
+            <p><strong>Banco de Dados:</strong> SQL (Version 14) - 2014</p>
+            <p><strong>Tecnologia:</strong> Visual Basic</p>
+            <p><strong>SSO:</strong> OK</p>
+            <p><strong>Comentários:</strong> Tecnologia obsoleta....</p>
+        </div>
+    </div>
+    
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-3')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">Se@pack</span>
+        </div>
+        <div id="details-3" class="app-details">
+            <p><strong>Nível de Aderência:</strong> 1</p>
+            <p><strong>Versão do Produto:</strong> V1.0</p>
+            <p><strong>Sistema Operacional:</strong> nan</p>
+            <p><strong>Banco de Dados:</strong> nan</p>
+            <p><strong>Tecnologia:</strong> Lotus Notes</p>
+            <p><strong>SSO:</strong> Não</p>
+            <p><strong>Comentários:</strong> Tecnologia obsoleta, sem roadmap do produto, falha de segurança (acesso via RDP protocolo vulnerável), não tem SSO, não tem API aberta</p>
+        </div>
+    </div>
+    
+    </body>
+    </html>
+    
