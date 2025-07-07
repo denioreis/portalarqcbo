@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliação das Aplicações - Expandível</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        #export-btn {
+            font-size: 12px;
+            padding: 4px 10px;
+            margin-bottom: 20px;
+        }
+        .app-row {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .app-header {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            background-color: #2a4d69;
+            color: #fff;
+        }
+        .toggle-button {
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .system-name {
+            font-size: 16px;
+        }
+        .app-details {
+            display: none;
+            padding: 15px;
+            background-color: #fafafa;
+        }
+        .app-details p {
+            margin: 6px 0;
+        }
+        #filters {
+            margin-bottom: 20px;
+        }
+        #filters label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #filters select {
+            margin-right: 20px;
+        }
+    </style>
+    <script>
+        function toggleDetails(id) {
+            const details = document.getElementById(id);
+            const button = details.previousElementSibling.querySelector('.toggle-button');
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                button.textContent = '−';
+            } else {
+                details.style.display = 'none';
+                button.textContent = '+';
+            }
+        }
+
+        function applyFilters() {
+            const aderencia = document.getElementById('filter-aderencia').value;
+            const Criticidade = document.getElementById('filter-Criticidade').value;
+            const rows = document.querySelectorAll('.app-row');
+
+            rows.forEach(row => {
+                const details = row.querySelector('.app-details');
+                const aderenciaValue = details.querySelector('p:nth-child(1)').textContent;
+                const CriticidadeValue = details.querySelector('p:nth-child(2)').textContent;
+
+                const aderenciaMatch = aderencia === "" || aderenciaValue.includes(aderencia);
+                const CriticidadeMatch = Criticidade === "" || CriticidadeValue.includes(Criticidade);
+
+                row.style.display = (aderenciaMatch && CriticidadeMatch) ? "block" : "none";
+            });
+        }
+
+        function exportCSV() {
+            let csv = "Sistema,Nível de Aderência,Criticidade,Versão do Produto,Sistema Operacional,Banco de Dados,Tecnologia,SSO,Comentários\n";
+            document.querySelectorAll('.app-row').forEach(row => {
+                if (row.style.display === "none") return;
+
+                const sistema = row.querySelector('.system-name').textContent.trim();
+                const campos = Array.from(row.querySelectorAll('.app-details p')).map(p =>
+                    p.textContent.split(':').slice(1).join(':').trim().replace(/\n/g, ' ')
+                );
+                csv += [sistema, ...campos].join(",") + "\n";
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "aplicacoes.csv";
+            link.click();
+        }
+    </script>
+</head>
+<body>
+    <h1>Mapa das Aplicações</h1>
+    <button id="export-btn" onclick="exportCSV()">Export</button>
+
+    <div id="filters">
+        <label for="filter-aderencia">Filtro: Nível de Aderência:</label>
+        <select id="filter-aderencia" onchange="applyFilters()">
+            <option value="">Todos</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+        </select>
+
+        <label for="filter-Criticidade">Criticidade:</label>
+        <select id="filter-Criticidade" onchange="applyFilters()">
+            <option value="">Todas</option>
+            <option value="Alta">Alta</option>
+			<option value="Média">Média</option>
+			<option value="Baixa">Baixa</option>
+        </select>
+    </div>
+
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-1')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">SAP</span>
+        </div>
+        <div id="details-1" class="app-details">
+            <p><strong>NÍVEL DE ADERÊNCIA:</strong> 2</p>
+            <p><strong>Criticidade:</strong>Alta</p>
+            <p><strong>Versão do Produto:</strong>ECC 6.0 EHP5 e NW7.1 EHP1 (PI)</p>
+            <p><strong>Sistema Operacional:</strong>Oracle Linux 7.9</p>
+            <p><strong>Banco de Dados:</strong>Oracle 12.2.0.1</p>
+            <p><strong>Tecnologia:</strong>SAP/Application: ECC 6.0 EHP5 e NW7.1 EHP1 (PI)  - SAP kernel: 722 SP1116 Unicode - Installation Type: Single SID (DB+ASCS+PAS)</p>            <p><strong>SSO:</strong>Não Integrado</p>
+            <p><strong>Comentários:</strong>O sistema de gestão empresarial atualmente utilizado pela companhia está tecnicamente defasado e foi originalmente configurado com base em um modelo de negócio diferente do nosso. Isso tem gerado limitações importantes na operação, na integração entre áreas e na tomada de decisões estratégicas.
+Embora estejam previstas atualizações para manter o sistema funcionando nos próximos anos, essas mudanças são apenas paliativas. O sistema continuará com limitações, e o suporte completo à plataforma será encerrado em poucos anos, exigindo custos extras para sua manutenção.
+Atualmente, diversas atividades importantes (Ex:planejamento financeiro e os relatórios gerenciais), são gerados fora do sistema principal, em planilhas ou ferramentas paralelas. Isso aumenta riscos, retrabalho e dificulta a padronização e consolidação das informações.
+</p>
+        </div>
+    </div>
+
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-2')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">TM Master</span>
+        </div>
+        <div id="details-2" class="app-details">
+            <p><strong>NÍVEL DE ADERÊNCIA:</strong> 1</p>
+            <p><strong>Criticidade:</strong> Alta</p>
+            <p><strong>Versão do Produto:</strong> Versão 2</p>
+            <p><strong>Sistema Operacional:</strong> Windows Server 2012 R2</p>
+            <p><strong>Banco de Dados:</strong>SQL (Version 14) - 2014</p>
+            <p><strong>Tecnologia:</strong> Visual Basic</p>
+            <p><strong>SSO:</strong>Não</p>
+            <p><strong>Comentários:</strong>Sistema de gerenciamento de frota, desenvolvido em uma plataforma atualmente com Tecnologia obsoleta (VB Studio).
+			Integração com o SAP em duas vias, com uma arquitetura de integração deficiente utilizando protocolo SOAP e solução com vários problemas, gerando impactos
+diretos no funcionamento e integridade de dados. Não apresenta um Roadmap evolutivo claro e muita dificuldade no suporte e no tratamento de erros por parte do fornecedor.
+</p>
+        </div>
+    </div>
+
+ <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-3')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">BlueOpex</span>
+        </div>
+        <div id="details-3" class="app-details">
+            <p><strong>NÍVEL DE ADERÊNCIA:</strong> 4</p>
+            <p><strong>Criticidade:</strong> Alta</p>
+            <p><strong>Versão do Produto:</strong> V1.0</p>
+            <p><strong>Sistema Operacional:</strong> Windows (Ambiente Azure)</p>
+            <p><strong>Banco de Dados:</strong> SQL Server</p>
+            <p><strong>Tecnologia:</strong> Microsoft (Ambiente Azure)</p>
+            <p><strong>SSO:</strong> Não</p>
+            <p><strong>Comentários:</strong> BlueOpex é uma suíte de aplicações de workforce management, que atua em vários segmentos,onde utilizamos a ferramentas para o Offshore.
+			Tecnologia compatível com mercado, sistema utliza a Azure Cloud, produto em evolução e desenvolvimento, segurança com criptografia AES 256,tem API´s exposta para acessos aos dados com autenticação OAUTH2.
+			Aplicação após implantação apresentando problemas funcionais, que impactam o negócio.
+			</p>
+        </div>
+    </div>
+
+
+    <div class="app-row">
+        <div class="app-header" onclick="toggleDetails('details-4')">
+            <span class="toggle-button">+</span>
+            <span class="system-name">Se@pack</span>
+        </div>
+        <div id="details-4" class="app-details">
+            <p><strong>NÍVEL DE ADERÊNCIA:</strong> 1</p>
+            <p><strong>Criticidade:</strong> Média</p>
+            <p><strong>Versão do Produto:</strong> V1.0</p>
+            <p><strong>Sistema Operacional:</strong> windows</p>
+            <p><strong>Banco de Dados:</strong> SQL Server</p>
+            <p><strong>Tecnologia:</strong> Lotus Notes</p>
+            <p><strong>SSO:</strong> Não</p>
+            <p><strong>Comentários:</strong> Tecnologia obsoleta, sem roadmap do produto, falha de segurança (acesso via RDP protocolo vulnerável), não tem SSO, não tem API aberta, sem rastreabilidade de logs.
+			                                 Uso da ferramenta exige muito trabalho manual para execução do Processo.
+											 </p>
+        </div>
+    </div>
+	
+		
+	    <footer style="position: relative; bottom: 0; margin-top: 40px; font-size: 12px; color: #666;">
+        <script>
+            const now = new Date();
+            document.write('Data de Atualização: ' + now.toLocaleDateString('pt-BR'));
+        </script>
+    </footer>
+</body>
+</html>
