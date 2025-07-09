@@ -1,0 +1,118 @@
+
+<html>
+<head>
+    <title>Avaliação das Aplicações - Expandível</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        .app-row {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .app-header {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            background-color: #2a4d69;
+            color: #fff;
+        }
+        .toggle-button {
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .system-name {
+            font-size: 16px;
+        }
+        .app-details {
+            display: none;
+            padding: 15px;
+            background-color: #fafafa;
+        }
+        .app-details p {
+            margin: 6px 0;
+        }
+        #filters {
+            margin-bottom: 20px;
+        }
+        #filters label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #filters select {
+            margin-right: 20px;
+        }
+    </style>
+    <script>
+        function toggleDetails(id) {
+            var details = document.getElementById(id);
+            var button = details.previousElementSibling.querySelector('.toggle-button');
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                button.textContent = '−';
+            } else {
+                details.style.display = 'none';
+                button.textContent = '+';
+            }
+        }
+
+        function applyFilters() {
+            var aderencia = document.getElementById('filter-aderencia').value;
+            var classificacao = document.getElementById('filter-classificacao').value;
+            var rows = document.querySelectorAll('.app-row');
+
+            rows.forEach(function(row) {
+                var details = row.querySelector('.app-details');
+                var aderenciaValue = details.querySelector('p:nth-child(1)').textContent;
+                var classificacaoValue = details.querySelector('p:nth-child(2)').textContent;
+
+                var aderenciaMatch = aderencia === "" || aderenciaValue.includes(aderencia);
+                var classificacaoMatch = classificacao === "" || classificacaoValue.includes(classificacao);
+
+                row.style.display = (aderenciaMatch && classificacaoMatch) ? "block" : "none";
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Mapa das Aplicações</h1>
+
+    <div id="filters">
+        <label for="filter-aderencia">Filtrar por Nível de Aderência:</label>
+        <select id="filter-aderencia" onchange="applyFilters()">
+            <option value="">Todos</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+
+        <label for="filter-classificacao">Filtrar por Classificação:</label>
+        <select id="filter-classificacao" onchange="applyFilters()">
+            <option value="">Todas</option>
+            <option value="Sistema Crítico">Sistema Crítico</option>
+        </select>
+    </div>
+
+   
+	
+	
+
+    <footer style="position: relative; bottom: 0; margin-top: 40px; font-size: 12px; color: #666;">
+        <script>
+            const now = new Date();
+            const formatted = now.toLocaleDateString('pt-BR');
+            document.write('Data de Atualização: ' + formatted);
+        </script>
+    </footer>
+
+</body>
+</html>
